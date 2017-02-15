@@ -87,7 +87,7 @@ void setColorConversion709( GLfloat conversionMatrix[9] )
     capturePaused = NO;
     outputRotation = kGPUImageNoRotation;
     internalRotation = kGPUImageNoRotation;
-    captureAsYUV = YES;
+    captureAsYUV = NO;
     _preferredConversion = kColorConversion709;
     
 	// Grab the back-facing or front-facing camera
@@ -217,6 +217,11 @@ void setColorConversion709( GLfloat conversionMatrix[9] )
     
 	_captureSessionPreset = sessionPreset;
     [_captureSession setSessionPreset:_captureSessionPreset];
+    
+    AVCaptureConnection *_videoConnection = [videoOutput connectionWithMediaType:AVMediaTypeVideo];
+    if ([_videoConnection isVideoOrientationSupported]) {
+        [_videoConnection setVideoOrientation:AVCaptureVideoOrientationPortrait];
+    }
 
 // This will let you get 60 FPS video from the 720p preset on an iPhone 4S, but only that device and that preset
 //    AVCaptureConnection *conn = [videoOutput connectionWithMediaType:AVMediaTypeVideo];
